@@ -1,0 +1,42 @@
+extends layout
+
+block content
+  div(class="container")
+    div(class="col-md-12")
+      div(class="col-md-6 col-sm-8 col-xs-4")
+        h2(class="text-primary")= title
+      div(class="col-md-4")
+        form(id='appleForm', action="/resource/apples", method="POST")
+          div.form-group
+              label(for='apple_type') Apple type: 
+              input#apple_type(type='text', name='apple_type',class="form-control form-control-sm")
+          div.form-group
+              label(for='cost') Apple Cost: 
+              input#cost(type='text', name='cost',class="form-control form-control-sm")
+          div.form-group
+              label(for='quantity') Apple Quantity: 
+              input#quantity(type='number', name='quantity',class="form-control form-control-sm")
+          input(type="submit" class="btn btn-primary btn-sm")
+      div(class="col-md-4")
+  script.
+    document.forms['appleForm'].addEventListener('submit', (event) => {
+        event.preventDefault();
+        // TODO do something here to show user that form is being submitted
+        fetch(event.target.action, {
+          method: 'POST',
+          body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+        }).then((resp) => {
+          document.getElementById("errors")
+          return resp.json(); // or resp.text() or whatever the server sends
+        }).then((body) => {
+          if (body.Name) {
+            document.getElementById("errors").innerHTML = `${body.Name}  \n ${body.message}\n`;
+            alert("Save Failed")
+          } else {
+            alert("Save succeded")
+          }
+        }).catch((error) => {
+          // TODO handle error
+          alert("Save failed " + error)
+        });
+    });

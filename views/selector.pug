@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  - let image_names = ['app1.jpg','app2.jpg','app3.jpg','app4.jpg','app5.jpg']
+  - for(let i=0;i<3;i++){
+      - let randomNumber = Math.floor(Math.random()*5)
+      - let imageNameVariable = image_names[randomNumber]
+
+      img(src=`images/${imageNameVariable}` alt='apples' style='width:300px; height:300px;')
+      |    
+  - }
